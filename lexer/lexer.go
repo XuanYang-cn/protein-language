@@ -57,12 +57,31 @@ func (l *Lexer) NextToken() token.Token {
 		tok.Literal = ""
 		tok.Type = token.EOF
 	default:
-		tok.Type = token.ILLEGAL
+		if isLegalIdentifier(l.ch) {
+			tok.Literal = l.readIdentifier()
+			return tok
+		}
+
+		tok = newToken(token.ILLEGAL, l.ch)
 	}
 
 	l.readChar()
 
 	return tok
+}
+
+func (l *Lexer) readIdentifier() string {
+	position := l.position
+
+	for isLegalIdentifier(l.ch) {
+		l.readChar()
+	}
+
+	return l.input[position:l.position]
+}
+
+func isLegalIdentifier(ch byte) bool {
+	return 'a' <= ch && ch <= 'z' || 'A' <= ch && ch <= 'Z' || ch == '_'
 }
 
 func newToken(tokenType token.Type, ch byte) token.Token {
