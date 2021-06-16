@@ -44,7 +44,7 @@ func TestNextToken(t *testing.T) {
 		}
 	})
 
-	t.Run("Test complex code", func(t *testing.T) {
+	t.Run("Test Complex Code", func(t *testing.T) {
 		input := `var five int = 5;
 var ten int = 10;
 
@@ -62,14 +62,14 @@ var result int = add(five, ten);
 			{token.IDENT, "five"},
 			{token.INT, "int"},
 			{token.ASSIGN, "="},
-			{token.INT8, "5"},
+			{token.INTEGER, "5"},
 			{token.SEMICOLON, ";"},
 
 			{token.VAR, "var"},
 			{token.IDENT, "ten"},
 			{token.INT, "int"},
 			{token.ASSIGN, "="},
-			{token.INT8, "10"},
+			{token.INTEGER, "10"},
 			{token.SEMICOLON, ";"},
 
 			{token.VAR, "var"},

@@ -12,8 +12,8 @@ const (
 	EOF     = "EOF"
 
 	// Identifiers and literals
-	IDENT = "IDENT" // add, x, y
-	INT8  = "INT8"  // default int8
+	IDENT   = "IDENT"   // add, x, y
+	INTEGER = "INTEGER" // 5, 10
 
 	// Operators
 	ASSIGN = "="
@@ -45,7 +45,7 @@ var keywords = map[string]Type{
 	"return": RETURN,
 }
 
-func LookupIndext(ident string) Type {
+func LookupIndent(ident string) Type {
 	if tok, ok := keywords[ident]; ok {
 		return tok
 	}

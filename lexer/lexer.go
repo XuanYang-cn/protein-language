@@ -1,6 +1,8 @@
 package lexer
 
-import "protine/token"
+import (
+	"protine/token"
+)
 
 type Lexer struct {
 	input        string
@@ -30,6 +32,8 @@ func (l *Lexer) readChar() {
 func (l *Lexer) NextToken() token.Token {
 	var tok token.Token
 
+	l.skipWhitespace()
+
 	switch l.ch {
 	case '=':
 		tok = newToken(token.ASSIGN, l.ch)
@@ -57,8 +61,17 @@ func (l *Lexer) NextToken() token.Token {
 		tok.Literal = ""
 		tok.Type = token.EOF
 	default:
-		if isLegalIdentifier(l.ch) {
-			tok.Literal = l.readIdentifier()
+		if isLetter(l.ch) {
+			tok.Literal = l.readLetter()
+			tok.Type = token.LookupIndent(tok.Literal)
+
+			return tok
+		}
+
+		if isDigit(l.ch) {
+			tok.Literal = l.readNumber()
+			tok.Type = token.INTEGER
+
 			return tok
 		}
 
@@ -70,18 +83,38 @@ func (l *Lexer) NextToken() token.Token {
 	return tok
 }
 
-func (l *Lexer) readIdentifier() string {
+func (l *Lexer) skipWhitespace() {
+	for l.ch == ' ' || l.ch == '\t' || l.ch == '\n' || l.ch == '\r' {
+		l.readChar()
+	}
+}
+
+func (l *Lexer) readLetter() string {
 	position := l.position
 
-	for isLegalIdentifier(l.ch) {
+	for isLetter(l.ch) {
 		l.readChar()
 	}
 
 	return l.input[position:l.position]
 }
 
-func isLegalIdentifier(ch byte) bool {
+// This only read *Intergers*
+func (l *Lexer) readNumber() string {
+	position := l.position
+	for isDigit(l.ch) {
+		l.readChar()
+	}
+
+	return l.input[position:l.position]
+}
+
+func isLetter(ch byte) bool {
 	return 'a' <= ch && ch <= 'z' || 'A' <= ch && ch <= 'Z' || ch == '_'
+}
+
+func isDigit(ch byte) bool {
+	return '0' <= ch && ch <= '9'
 }
 
 func newToken(tokenType token.Type, ch byte) token.Token {

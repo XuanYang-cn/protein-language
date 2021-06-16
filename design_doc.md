@@ -43,3 +43,5 @@ code.
 
 TODO 1: Attach filenames and line numbers to tokens.
 TODO 2: Fully support Unicode and emojis.
+TODO 3: Generalize `readNumber` and `readLetter`
+TODO 4: Support int8, int16, int32, int64, float and double
