@@ -1,0 +1,31 @@
+run:
+  skip-dirs:
+    - go
+
+linters-settings:
+  golint:
+    min-confidence: 0.8
+
+  misspell:
+    locale: UK
+
+linters:
+  disable-all: true
+  enable:
+    - typecheck
+    - goimports
+    - misspell
+    - govet
+    - golint
+    - ineffassign
+    - gosimple
+    - misspell
+    - deadcode
+    - staticcheck
+
+issues:
+  exclude-use-default: false
+  exclude:
+    - should have a package comment
+    - should have comment
+    - should be of the form
